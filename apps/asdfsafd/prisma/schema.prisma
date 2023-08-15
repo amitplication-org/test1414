@@ -1,0 +1,35 @@
+datasource postgres {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  firstName String?
+  lastName  String?
+  username  String   @unique
+  password  String
+  roles     Json
+}
+
+model WithIdFieldNotPK {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model WithIdNotNamedId {
+  id   Int    @id @default(autoincrement()) @map("something")
+  name String
+}
+
+model Merge {
+  MergeId Int    @map("id")
+  id      Int    @id @default(autoincrement()) @map("something")
+  name    String
+}
